@@ -1,0 +1,120 @@
+### Requisicoes de exemplo (IntelliJ HTTP Client ou extensao REST Client do VS Code)
+### Troque @base pela URL do Render para testar o deploy.
+@base = http://localhost:8080
+
+### ---------- PONTOS ----------
+GET {{base}}/api/pontos
+
+###
+GET {{base}}/api/pontos?bairro=Jardim Pantanal
+
+###
+GET {{base}}/api/pontos/1
+
+###
+GET {{base}}/api/pontos/status
+
+###
+POST {{base}}/api/pontos
+Content-Type: application/json
+
+{
+  "nome": "Canal Demonstracao",
+  "bairro": "Bairro Demo",
+  "cidade": "Sao Paulo",
+  "latitude": -23.5505,
+  "longitude": -46.6333,
+  "cotaAtencaoCm": 50,
+  "cotaCriticaCm": 90
+}
+
+###
+PUT {{base}}/api/pontos/7
+Content-Type: application/json
+
+{
+  "nome": "Canal Demonstracao",
+  "bairro": "Bairro Demo",
+  "cidade": "Sao Paulo",
+  "latitude": -23.5505,
+  "longitude": -46.6333,
+  "cotaAtencaoCm": 55,
+  "cotaCriticaCm": 95,
+  "ativo": true
+}
+
+###
+DELETE {{base}}/api/pontos/6
+
+### ---------- SENSORES ----------
+GET {{base}}/api/sensores?pontoId=1
+
+###
+POST {{base}}/api/sensores
+Content-Type: application/json
+
+{ "pontoId": 7, "codigo": "S-DEMO-NIV-01", "tipo": "NIVEL_AGUA" }
+
+###
+PUT {{base}}/api/sensores/7
+Content-Type: application/json
+
+{ "pontoId": 7, "codigo": "S-DEMO-NIV-01", "tipo": "NIVEL_AGUA", "status": "MANUTENCAO" }
+
+###
+DELETE {{base}}/api/sensores/6
+
+### ---------- MEDICOES ----------
+GET {{base}}/api/medicoes?sensorId=1&limite=10
+
+###
+POST {{base}}/api/medicoes
+Content-Type: application/json
+
+{ "sensorId": 3, "valor": 104.5, "origem": "SIMULADOR" }
+
+###
+PUT {{base}}/api/medicoes/15
+Content-Type: application/json
+
+{ "sensorId": 5, "valor": 22.0, "origem": "MANUAL" }
+
+###
+DELETE {{base}}/api/medicoes/15
+
+### ---------- ALERTAS ----------
+GET {{base}}/api/alertas?status=ABERTO
+
+###
+POST {{base}}/api/alertas
+Content-Type: application/json
+
+{ "pontoId": 4, "nivel": "ATENCAO", "mensagem": "Agente comunitario relatou agua na calcada" }
+
+###
+PUT {{base}}/api/alertas/3
+Content-Type: application/json
+
+{ "pontoId": 2, "nivel": "ATENCAO", "mensagem": "Nivel normalizado apos vistoria", "status": "ENCERRADO" }
+
+###
+DELETE {{base}}/api/alertas/5
+
+### ---------- ERROS (para prints da documentacao) ----------
+### 400
+POST {{base}}/api/pontos
+Content-Type: application/json
+
+{ "nome": "" }
+
+### 404
+GET {{base}}/api/pontos/9999
+
+### 409
+DELETE {{base}}/api/pontos/1
+
+### 422
+POST {{base}}/api/medicoes
+Content-Type: application/json
+
+{ "sensorId": 5, "valor": 10 }
