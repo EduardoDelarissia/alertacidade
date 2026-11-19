@@ -6,6 +6,22 @@
 ![Status](https://img.shields.io/badge/Integra%C3%A7%C3%A3o-Validada-brightgreen)
 ![Deploy](https://img.shields.io/badge/Deploy-Render-46E3B7)
 
+## 📋 Ficha da CitizenTech — base comum da equipe
+
+> **Ficha de alinhamento do projeto (Global Solution 2026.2).** A cidade e o bairro abaixo são uma **área de referência proposta**, a confirmar pela equipe. O indicador de impacto é uma **métrica proposta**, ainda sem resultado mensurado.
+
+| Campo | Descrição |
+|---|---|
+| **Nome da CitizenTech** | AlertaCidade |
+| **Cidade e bairro** | São Paulo (SP) — **bairro específico a definir pela equipe**; foco em áreas urbanas sujeitas a enchentes |
+| **Cidadão beneficiado** | Moradores de áreas vulneráveis a alagamentos e enchentes, especialmente quem precisa de informações sobre riscos locais |
+| **Problema, em uma frase** | A falta de informações organizadas e alertas acessíveis dificulta o acompanhamento de riscos de enchentes em áreas urbanas. |
+| **Como funciona** | Uma API REST recebe, registra e consulta dados de pontos de monitoramento, sensores, medições e alertas, persistidos no Oracle FIAP e disponibilizados pelo backend hospedado no Render. |
+| **O que cada parte faz** | **Java/Spring Boot:** processa requisições e regras da API; **Oracle FIAP:** armazena registros; **Postman/Swagger:** apoiam testes e documentação; **Docker/Render:** empacotam e hospedam o backend. Dashboard, mapa e sensores IoT são melhorias futuras, não funcionalidades já comprovadas. |
+| **Link do repositório** | https://github.com/EduardoDelarissia/alertacidade |
+| **Indicador de impacto** | **Proposto:** percentual de alertas críticos registrados e disponibilizados pela API, medido por período. Não há indicador de impacto social aferido até o momento. |
+| **ODS conectados** | **ODS 11:** Cidades e Comunidades Sustentáveis; **ODS 13:** Ação Contra a Mudança Global do Clima. |
+
 ## 📌 Sobre o projeto
 
 O **AlertaCidade** é um projeto acadêmico desenvolvido para a Global Solution 2026 da FIAP, dentro da temática CitizenTech.
