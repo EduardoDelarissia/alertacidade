@@ -13,7 +13,7 @@
 | Campo | Descrição |
 |---|---|
 | **Nome da CitizenTech** | AlertaCidade |
-| **Cidade e bairro** | São Paulo (SP) — **bairro específico a definir pela equipe**; foco em áreas urbanas sujeitas a enchentes |
+| **Cidade e bairro** | São Paulo (SP) — Bela Vista ; foco em áreas urbanas sujeitas a enchentes |
 | **Cidadão beneficiado** | Moradores de áreas vulneráveis a alagamentos e enchentes, especialmente quem precisa de informações sobre riscos locais |
 | **Problema, em uma frase** | A falta de informações organizadas e alertas acessíveis dificulta o acompanhamento de riscos de enchentes em áreas urbanas. |
 | **Como funciona** | Uma API REST recebe, registra e consulta dados de pontos de monitoramento, sensores, medições e alertas, persistidos no Oracle FIAP e disponibilizados pelo backend hospedado no Render. |
