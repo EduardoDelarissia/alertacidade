@@ -3,7 +3,8 @@
 ![Java](https://img.shields.io/badge/Java-Spring%20Boot-orange)
 ![Oracle](https://img.shields.io/badge/Database-Oracle-red)
 ![API](https://img.shields.io/badge/API-REST-blue)
-![Status](https://img.shields.io/badge/Integração-Validada-brightgreen)
+![Status](https://img.shields.io/badge/Integra%C3%A7%C3%A3o-Validada-brightgreen)
+![Deploy](https://img.shields.io/badge/Deploy-Render-46E3B7)
 
 ## 📌 Sobre o projeto
 
@@ -12,6 +13,33 @@ O **AlertaCidade** é um projeto acadêmico desenvolvido para a Global Solution 
 O objetivo é contribuir para o monitoramento de situações de risco em áreas urbanas, especialmente aquelas relacionadas a enchentes e ao aumento do nível da água.
 
 A aplicação permite organizar informações sobre pontos de monitoramento, sensores, medições e alertas, utilizando uma API REST desenvolvida em Java com Spring Boot e integrada ao banco de dados Oracle FIAP.
+
+## 🌐 Deploy em produção — Render
+
+O backend foi publicado no **Render** em 19/11/2026. O painel exibiu **Deploy succeeded | Live**, e a consulta pública de alertas retornou registros JSON.
+
+- **URL do serviço:** https://alertacidade.onrender.com
+- **Consultar alertas (GET):** https://alertacidade.onrender.com/api/alertas
+- **Swagger / OpenAPI:** https://alertacidade.onrender.com/swagger-ui.html *(acesso sujeito à configuração da aplicação)*
+- **Repositório GitHub:** https://github.com/EduardoDelarissia/alertacidade
+
+> **Observação:** a rota raiz `/` pode retornar HTTP 404 porque a aplicação fornece endpoints REST e não necessariamente uma página inicial. Para testar o deploy, utilize `/api/alertas`. Em instâncias gratuitas do Render, a primeira requisição após inatividade pode demorar mais.
+
+### Evidências do deploy
+
+Os registros do Render mostraram:
+
+```text
+Deploy succeeded | Live
+Your service is live
+Available at your primary URL https://alertacidade.onrender.com
+Tomcat started on port 8080 (http)
+Started AlertaCidadeApplication
+HikariPool-1 - Added connection oracle.jdbc.driver.T4CConnection
+HikariPool-1 - Start completed.
+```
+
+A inicialização do pool de conexões Oracle e a resposta JSON da API em produção demonstram o funcionamento do backend publicado. A comprovação detalhada está no PDF de evidências do projeto.
 
 ## 🎯 Objetivos
 
@@ -37,6 +65,8 @@ A aplicação permite organizar informações sobre pontos de monitoramento, sen
 | Swagger / OpenAPI | Documentação interativa da API |
 | IntelliJ IDEA | Ambiente de desenvolvimento |
 | Git e GitHub | Versionamento |
+| Docker | Empacotamento para deploy |
+| Render | Hospedagem do backend |
 
 ## 🏗️ Arquitetura
 
@@ -63,6 +93,8 @@ O backend utiliza Spring Boot para receber e processar requisições HTTP, comun
   Medições
 ```
 
+Em produção, o cliente acessa a API hospedada no Render, que utiliza as variáveis de ambiente configuradas para conectar-se ao Oracle FIAP.
+
 ## 🗄️ Banco de dados
 
 O projeto utiliza o Oracle Database disponibilizado pela FIAP.
@@ -85,25 +117,21 @@ O projeto utiliza o Oracle Database disponibilizado pela FIAP.
 | Medições | 15 |
 | Alertas | 5 |
 
-Posteriormente, foi criado um novo alerta pela API REST, recebendo o identificador **16**.
-
-Esse registro foi confirmado diretamente no Oracle SQL Developer.
+Posteriormente, foi criado um novo alerta pela API REST, recebendo o identificador **16**. Esse registro foi confirmado diretamente no Oracle SQL Developer.
 
 ## ⚙️ Configuração do backend
 
-O projeto utiliza diferentes perfis de configuração do Spring Boot.
+O projeto utiliza diferentes perfis de configuração do Spring Boot:
 
 - `dev`: ambiente de desenvolvimento, utilizando H2.
 - `prod`: ambiente de produção, configurado para utilizar Oracle FIAP.
 
 ### Configuração Oracle
 
-Arquivo:
-
-`backend-java/src/main/resources/application-prod.properties`
+Arquivo: `backend-java/src/main/resources/application-prod.properties` (dentro do diretório do backend no repositório).
 
 ```properties
-spring.datasource.url=${DB_URL:jdbc:oracle:thin:@oracle.fiap.com.br:1521:orcl}
+spring.datasource.url=${DB_URL:jdbc:oracle:thin:@oracle.fiap.com.br:1521:ORCL}
 spring.datasource.username=${DB_USER}
 spring.datasource.password=${DB_PASSWORD}
 spring.datasource.driver-class-name=oracle.jdbc.OracleDriver
@@ -117,13 +145,11 @@ spring.datasource.hikari.connection-timeout=20000
 logging.level.com.zaxxer.hikari=INFO
 ```
 
-As tabelas são criadas previamente utilizando os scripts SQL do projeto.
-
-A aplicação não depende de geração automática de tabelas pelo Hibernate.
+As tabelas são criadas previamente utilizando os scripts SQL do projeto. A aplicação não depende de geração automática de tabelas pelo Hibernate.
 
 ### Variáveis de ambiente
 
-Para utilizar o Oracle, configure:
+Para utilizar o Oracle, configure localmente ou nas **Environment Variables** do Render:
 
 ```text
 SPRING_PROFILES_ACTIVE=prod
@@ -131,14 +157,12 @@ DB_USER=seu_usuario
 DB_PASSWORD=sua_senha
 ```
 
-Opcionalmente, configure `DB_URL` caso o endereço de conexão seja diferente.
+Opcionalmente, configure `DB_URL` caso o endereço de conexão seja diferente. **Nunca publique senhas reais ou arquivos contendo credenciais no GitHub.**
 
-**Importante:** nunca publique senhas reais ou arquivos contendo credenciais no GitHub.
-
-## 🚀 Como executar
+## 🚀 Como executar localmente
 
 1. Clone o repositório.
-2. Abra o módulo `backend-java` no IntelliJ IDEA.
+2. Abra o módulo `backend-java` no IntelliJ IDEA (localize o `pom.xml`).
 3. Aguarde o carregamento das dependências Maven.
 4. Configure as variáveis de ambiente do banco.
 5. Execute a classe `AlertaCidadeApplication.java`.
@@ -152,24 +176,14 @@ Tomcat started on port 8080 (http)
 Started AlertaCidadeApplication
 ```
 
-A API estará disponível em:
-
-`http://localhost:8080`
+A API local estará disponível em `http://localhost:8080`.
 
 ## 🌐 API REST
 
-O projeto possui recursos relacionados a:
+O projeto possui recursos relacionados a **alertas, pontos de monitoramento, sensores e medições**. Consulte as rotas e métodos disponíveis na documentação Swagger/OpenAPI, quando habilitada:
 
-- Alertas
-- Pontos de monitoramento
-- Sensores
-- Medições
-
-A documentação interativa pode ser acessada, com a aplicação em execução, em:
-
-**http://localhost:8080/swagger-ui.html**
-
-O Swagger permite consultar as rotas disponíveis, os métodos HTTP e os formatos esperados de requisição e resposta.
+- Local: http://localhost:8080/swagger-ui.html
+- Produção: https://alertacidade.onrender.com/swagger-ui.html
 
 ### GET — Consultar alertas
 
@@ -177,7 +191,9 @@ O Swagger permite consultar as rotas disponíveis, os métodos HTTP e os formato
 GET http://localhost:8080/api/alertas
 ```
 
-Retorna os alertas cadastrados no sistema em formato JSON.
+**Em produção:** `GET https://alertacidade.onrender.com/api/alertas`
+
+Retorna os alertas cadastrados no sistema em formato JSON. A consulta foi verificada no serviço publicado no Render.
 
 ### POST — Criar alerta
 
@@ -199,9 +215,7 @@ Exemplo de requisição:
 
 ### Resposta obtida
 
-Durante os testes no Postman, a aplicação retornou:
-
-**HTTP 201 Created**
+Durante os testes locais no Postman, a aplicação retornou **HTTP 201 Created**:
 
 ```json
 {
@@ -264,13 +278,11 @@ ORACLE FIAP
 REGISTRO CONFIRMADO
 ```
 
-Esse procedimento comprovou o funcionamento da integração entre o backend Java e o banco de dados Oracle FIAP.
+Esse procedimento comprovou o funcionamento da integração entre o backend Java e o banco de dados Oracle FIAP. Adicionalmente, os logs do Render registraram a abertura de conexão JDBC com Oracle durante a execução em produção.
 
 ## 📸 Evidências dos testes
 
-As verificações foram realizadas utilizando IntelliJ IDEA, Postman, navegador e Oracle SQL Developer.
-
-As evidências incluem:
+As verificações foram realizadas utilizando IntelliJ IDEA, Postman, navegador, Oracle SQL Developer e Render.
 
 1. Inicialização do Spring Boot com o perfil `prod`.
 2. Consulta das tabelas e contagem de registros no Oracle.
@@ -278,14 +290,15 @@ As evidências incluem:
 4. Requisição POST realizada pelo Postman.
 5. Resposta HTTP `201 Created`.
 6. Consulta SQL confirmando o alerta ID 16.
+7. Deploy concluído no Render com status **Live**.
+8. Logs do Render mostrando inicialização do Tomcat e conexão Oracle via HikariCP.
+9. GET público em `/api/alertas` retornando JSON.
 
-As capturas e explicações estão reunidas no relatório **AlertaCidade — Comprovação da Integração Oracle FIAP**.
+As capturas e explicações estão reunidas no relatório **AlertaCidade — Comprovação da Integração Oracle FIAP**, atualizado com o deploy.
 
 ## 🔐 Segurança
 
 O projeto utiliza variáveis de ambiente para proteger as credenciais de conexão com o banco.
-
-Recomendações:
 
 - Não publicar senhas no repositório.
 - Não versionar arquivos `.env` com credenciais.
@@ -303,6 +316,9 @@ Recomendações:
 - Endpoint POST criando um alerta.
 - Resposta HTTP `201 Created` confirmada.
 - Alerta ID 16 localizado no banco Oracle.
+- Deploy no Render concluído com sucesso.
+- API pública acessível em `https://alertacidade.onrender.com/api/alertas`.
+- Logs do Render confirmando conexão JDBC Oracle.
 
 ## 🔮 Próximas melhorias
 
@@ -317,16 +333,11 @@ Recomendações:
 
 ## 🎓 Informações acadêmicas
 
-**Instituição:** FIAP — Faculdade de Informática e Administração Paulista
-
-**Projeto:** AlertaCidade
-
-**Global Solution:** 2º semestre de 2026
-
-**Tema:** CitizenTech
-
-**Desenvolvedor:** Eduardo Antonio Delarissia
-
+**Instituição:** FIAP — Faculdade de Informática e Administração Paulista  
+**Projeto:** AlertaCidade  
+**Global Solution:** 2º semestre de 2026  
+**Tema:** CitizenTech  
+**Desenvolvedor:** Eduardo Antonio Delarissia  
 **RM:** 563468
 
 ## 🏁 Conclusão
@@ -334,6 +345,8 @@ Recomendações:
 O AlertaCidade demonstrou o funcionamento de sua API REST integrada ao banco de dados Oracle FIAP.
 
 O teste realizado com o Postman criou um novo alerta, retornando HTTP `201 Created`. Posteriormente, o mesmo registro foi localizado diretamente no Oracle SQL Developer.
+
+Além da validação local, o backend foi publicado no Render com sucesso. A API pública retornou alertas em JSON, e os logs de produção registraram a inicialização do pool de conexões Oracle.
 
 Essa validação confirma a comunicação e a persistência de dados entre Java, Spring Boot e Oracle, representando uma etapa importante do desenvolvimento do projeto.
 
